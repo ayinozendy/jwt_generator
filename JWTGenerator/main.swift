@@ -9,15 +9,15 @@ import CryptoKit
 import Foundation
 import CommonCrypto
 
-let jwt = try generateZoomSDKJWTForNative(
-  key: "12345abc"
-)
+let jwt = try generateZoomSDKJWTForNative("12345abc")
 
+print("Token:")
 print(jwt) //Verify at https://jwt.io/#debugger-io
+print("\nVerified: \(verifyJWTSignature(jwt))\n")
 //If you have a different secret key, provide it to the debugger signature verification
 
 //Learn how it works here: https://jwt.io/introduction
-func generateZoomSDKJWTForNative(key appKey: String, secret: String? = nil) throws -> String {
+func generateZoomSDKJWTForNative(_ appKey: String, secret: String? = nil) throws -> String {
   let expirationInterval: TimeInterval = 3600 * 24 * 365 //One year
   let iat = Int(Date().timeIntervalSince1970) //Now
   let expirationTime = iat + Int(expirationInterval) //Now + One Year
@@ -42,13 +42,38 @@ func generateZoomSDKJWTForNative(key appKey: String, secret: String? = nil) thro
   
   let encodedHeader = Data(headerData)
   let encodedClaims = Data(claimsData)
-  let secretWordData = Data(secretWord.utf8)
   
-  let dataToSign = encodedHeader.base64EncodedURLString() + "." + encodedClaims.base64EncodedURLString()
-  let hmacSHA256 = HMAC<SHA256>.authenticationCode(for: Data(dataToSign.utf8), using: SymmetricKey(data: secretWordData))
-  let hashData = Data(hmacSHA256).base64EncodedURLString()
+  let hashData = HMACSHA256String(
+    encodedHeader.base64EncodedURLString(),
+    encodedClaims.base64EncodedURLString(),
+    secretWord
+  )
   
   return "\(encodedHeader.base64EncodedURLString()).\(encodedClaims.base64EncodedURLString()).\(hashData)"
+}
+
+func verifyJWTSignature(_ jwt: String, secret: String? = nil) -> Bool {
+  let jwtComponents = jwt.components(separatedBy: ".")
+  if (jwtComponents.count != 3) {
+    return false
+  }
+  
+  let secretWord = secret ?? "your-256-bit-secret"
+  let hashData = HMACSHA256String(jwtComponents[0], jwtComponents[1], secretWord)
+  
+  if (jwtComponents[2] == hashData) {
+    return true
+  }
+  
+  return false
+}
+
+func HMACSHA256String(_ headerBase64: String, _ payloadBase64: String, _ secret: String) -> String {
+  let secretWordData = Data(secret.utf8)
+  let dataToSign = headerBase64 + "." + payloadBase64
+  let hmacSHA256 = HMAC<SHA256>.authenticationCode(for: Data(dataToSign.utf8), using: SymmetricKey(data: secretWordData))
+  
+  return Data(hmacSHA256).base64EncodedURLString()
 }
 
 extension Data {
