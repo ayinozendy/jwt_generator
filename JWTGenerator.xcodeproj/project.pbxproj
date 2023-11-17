@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1EF6C9DC2B0699F0007F5D86 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF6C9DB2B0699F0007F5D86 /* main.swift */; };
+		1EF6C9E52B069AF4007F5D86 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF6C9E32B0699FE007F5D86 /* CryptoKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		1EF6C9D82B0699F0007F5D86 /* JWTGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JWTGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EF6C9DB2B0699F0007F5D86 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		1EF6C9E32B0699FE007F5D86 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = System/Library/Frameworks/CryptoKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EF6C9E52B069AF4007F5D86 /* CryptoKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +46,7 @@
 			children = (
 				1EF6C9DA2B0699F0007F5D86 /* JWTGenerator */,
 				1EF6C9D92B0699F0007F5D86 /* Products */,
+				1EF6C9E22B0699FE007F5D86 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +64,14 @@
 				1EF6C9DB2B0699F0007F5D86 /* main.swift */,
 			);
 			path = JWTGenerator;
+			sourceTree = "<group>";
+		};
+		1EF6C9E22B0699FE007F5D86 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1EF6C9E32B0699FE007F5D86 /* CryptoKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
